@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class Fournisseur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
     private String societe;
     private String adresse;
     private String contact;

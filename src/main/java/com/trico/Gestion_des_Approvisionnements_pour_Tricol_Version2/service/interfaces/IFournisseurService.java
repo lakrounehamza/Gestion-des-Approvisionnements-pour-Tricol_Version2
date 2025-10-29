@@ -4,8 +4,8 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.Fournis
 import  java.util.List;
 public interface IFournisseurService {
     FournisseurDto save(FournisseurDto fournisseurDto);
-    FournisseurDto update(String id ,FournisseurDto fournisseurDto);
-    FournisseurDto delete(String id);
-    FournisseurDto getByid(String id);
+    FournisseurDto update(Long id ,FournisseurDto fournisseurDto);
+    FournisseurDto delete(Long id);
+    FournisseurDto getByid(Long id);
     List<FournisseurDto>  getAll();
 }

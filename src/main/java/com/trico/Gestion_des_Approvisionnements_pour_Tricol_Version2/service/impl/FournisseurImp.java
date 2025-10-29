@@ -6,10 +6,12 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Fou
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.maper.FournisseurMaper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IFournisseurService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Service
 @AllArgsConstructor
 public class FournisseurImp implements IFournisseurService {
     private final FournisseurMaper fournisseurMaper;

@@ -1,5 +1,6 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.controllers;
 
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseuRregistreDTO;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseurDto;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Fournisseur;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IFournisseurService;
@@ -16,9 +17,7 @@ import java.util.Optional;
 public class FournisserController {
     public final IFournisseurService fournisseurService;
     @PostMapping
-    public ResponseEntity<FournisseurDto>  createFournisseur(@RequestBody FournisseurDto fournisseurDto){
-        System.out.println(fournisseurDto);
-        FournisseurDto t = fournisseurDto;
+    public ResponseEntity<FournisseurDto>  createFournisseur(@RequestBody FournisseuRregistreDTO fournisseurDto){
       FournisseurDto f = fournisseurService.save(fournisseurDto);
         return ResponseEntity.of(Optional.ofNullable(f));
     }

@@ -35,7 +35,7 @@ public class FournisserController {
 
     @GetMapping("{id}")
     public ResponseEntity<FournisseurDto> getFournisseurById(@PathVariable Long id) {
-        FournisseurDto fournisseur = fournisseurService.getByid(id);
+        FournisseurDto fournisseur = fournisseurService.getById(id);
         if (fournisseur == null) {
             throw new NotFoundException("Fournisseur introuvable avec l'ID : " + id);
         }

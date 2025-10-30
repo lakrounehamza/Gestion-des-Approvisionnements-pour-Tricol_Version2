@@ -1,8 +1,8 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.impl;
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IFournisseurDao;
-import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseuRregistreDTO;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseurDto;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.register.FournisseuRregistreDTO;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Fournisseur;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.maper.FournisseurMaper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IFournisseurService;

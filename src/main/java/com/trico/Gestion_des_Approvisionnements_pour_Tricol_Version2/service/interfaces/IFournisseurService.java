@@ -1,7 +1,8 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces;
 
-import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseuRregistreDTO;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseurDto;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.register.FournisseuRregistreDTO;
+
 import  java.util.List;
 public interface IFournisseurService {
     FournisseurDto save(FournisseuRregistreDTO fournisseurDto);

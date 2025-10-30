@@ -1,6 +1,7 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.impl;
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IFournisseurDao;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseuRregistreDTO;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseurDto;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Fournisseur;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.maper.FournisseurMaper;
@@ -18,7 +19,7 @@ public class FournisseurImp implements IFournisseurService {
     private final IFournisseurDao fournisseurDao;
 
     @Override
-    public FournisseurDto save(FournisseurDto fournisseurDto) {
+    public FournisseurDto save(FournisseuRregistreDTO fournisseurDto) {
         Fournisseur fournisseur = fournisseurMaper.toEntity(fournisseurDto);
         Fournisseur fournisseurSave = fournisseurDao.save(fournisseur);
         FournisseurDto fournisseurDtoSave = fournisseurMaper.toDto(fournisseurSave);

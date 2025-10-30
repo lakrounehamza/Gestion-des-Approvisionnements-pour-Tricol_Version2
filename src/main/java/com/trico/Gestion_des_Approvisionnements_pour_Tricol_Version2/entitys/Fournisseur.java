@@ -1,14 +1,13 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Entity
@@ -26,4 +25,6 @@ public class Fournisseur {
     private String phone;
     private String ville;
     private String ice;
+    @OneToMany
+    private List<Commande> commande;
 }

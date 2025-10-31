@@ -2,6 +2,10 @@ package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.regist
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Produit;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.enums.TypeMouvementEnum;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +18,23 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class MouvementsStockRegisterDto {
-    private Date datemouvement ;
-    private int quantity  ;
-    private int quantityMin ;
-    private TypeMouvementEnum type ;
-    private String reference ;
+
+    @NotNull(message = "La date du mouvement est obligatoire.")
+    @PastOrPresent(message = "La date du mouvement ne peut pas être dans le futur.")
+    private Date datemouvement;
+
+    @Min(value = 1, message = "La quantité doit être supérieure à 0.")
+    private int quantity;
+
+    @Min(value = 0, message = "La quantité minimale ne peut pas être négative.")
+    private int quantityMin;
+
+    @NotNull(message = "Le type de mouvement est obligatoire.")
+    private TypeMouvementEnum type;
+
+    @NotBlank(message = "La référence du mouvement est obligatoire.")
+    private String reference;
+
+    @NotNull(message = "Le produit associé est obligatoire.")
     private Produit produit;
 }

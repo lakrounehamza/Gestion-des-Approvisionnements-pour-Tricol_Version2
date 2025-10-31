@@ -2,9 +2,9 @@ package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.im
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IFournisseurDao;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.FournisseurDto;
-import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.register.FournisseuRregistreDTO;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.register.FournisseurRegistreDTO;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Fournisseur;
-import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.maper.FournisseurMaper;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.FournisseurMapper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IFournisseurService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,15 +14,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
-public class FournisseurImp implements IFournisseurService {
-    private final FournisseurMaper fournisseurMaper;
+public class FournisseurServiceImpl implements IFournisseurService {
+    private final FournisseurMapper fournisseurMapper;
     private final IFournisseurDao fournisseurDao;
 
     @Override
-    public FournisseurDto save(FournisseuRregistreDTO fournisseurDto) {
-        Fournisseur fournisseur = fournisseurMaper.toEntity(fournisseurDto);
+    public FournisseurDto save(FournisseurRegistreDTO fournisseurDto) {
+        Fournisseur fournisseur = fournisseurMapper.toEntity(fournisseurDto);
         Fournisseur fournisseurSave = fournisseurDao.save(fournisseur);
-        FournisseurDto fournisseurDtoSave = fournisseurMaper.toDto(fournisseurSave);
+        FournisseurDto fournisseurDtoSave = fournisseurMapper.toDto(fournisseurSave);
         return fournisseurDtoSave;
     }
 
@@ -31,12 +31,12 @@ public class FournisseurImp implements IFournisseurService {
         if (!fournisseurDao.existsById(id)) {
             throw new RuntimeException("fournisseur non trouve ");
         }
-        Fournisseur newFournisseur = fournisseurMaper.toEntity(fournisseurDto);
+        Fournisseur newFournisseur = fournisseurMapper.toEntity(fournisseurDto);
         Optional<Fournisseur> optionalFournisseur = fournisseurDao.findById(id);
         if (optionalFournisseur.isPresent()) {
             newFournisseur.setId(id);
             Fournisseur fournisseurRes = fournisseurDao.save(newFournisseur);
-            return fournisseurMaper.toDto(fournisseurRes);
+            return fournisseurMapper.toDto(fournisseurRes);
         } else
             return null;
     }
@@ -46,18 +46,18 @@ public class FournisseurImp implements IFournisseurService {
         Fournisseur fournisseur = fournisseurDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("Fournisseur non trouve  pour suprission"));
         fournisseurDao.delete(fournisseur);
-        return fournisseurMaper.toDto(fournisseur);
+        return fournisseurMapper.toDto(fournisseur);
     }
 
     @Override
-    public FournisseurDto getByid(Long id) {
+    public FournisseurDto getById(Long id) {
         Fournisseur  fournisseur = fournisseurDao.findById(id).orElseThrow(()->new RuntimeException("fournisser non trouve "));
-            return fournisseurMaper.toDto(fournisseur);
+            return fournisseurMapper.toDto(fournisseur);
     }
 
     @Override
     public List<FournisseurDto> getAll() {
         List<Fournisseur>  fournisseurs = fournisseurDao.findAll();
-        return fournisseurs.stream().map(fournisseur -> fournisseurMaper.toDto(fournisseur)).collect(Collectors.toList());
+        return fournisseurs.stream().map(fournisseur -> fournisseurMapper.toDto(fournisseur)).collect(Collectors.toList());
     }
 }

@@ -8,7 +8,8 @@ import java.util.List;
 public interface IProduitService {
     ProduitDto save(ProduitRegisterDto dto);
     ProduitDto update(Long id , ProduitRegisterDto produit);
-    ProduitDto detete(Long id);
+    ProduitDto delete(Long id);
     ProduitDto getById(Long id);
     List<ProduitDto> getAll();
+    List<ProduitDto> getByCategorie(String categorie);
 }

@@ -9,6 +9,7 @@ public interface ICommandeService {
     CommandeDto save(CommandeRegisterDto commandeDto);
     CommandeDto update(Long id ,CommandeRegisterDto commandeDto);
     CommandeDto delete(Long id);
-    CommandeDto getByid(Long id);
+    CommandeDto getById(Long id);
     List<CommandeDto> getAll();
+    List<CommandeDto> getByStatut(String status);
 }

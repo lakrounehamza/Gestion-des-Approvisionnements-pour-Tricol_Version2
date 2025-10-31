@@ -9,6 +9,7 @@ public interface ICommandeItemService {
     CommandeItemDto save(CommandeItemRegisterDto commandeDto);
     CommandeItemDto update(Long id ,CommandeItemRegisterDto commandeDto);
     CommandeItemDto delete(Long id);
-    CommandeItemDto getByid(Long id);
+    CommandeItemDto getById(Long id);
     List<CommandeItemDto> getAll();
+    List<CommandeItemDto> getByCommandeId(Long id);
 }

@@ -8,7 +8,8 @@ import java.util.List;
 public interface IMouvementsStockService {
     MouvementsStockDto save(MouvementsStockRegisterDto dto);
     MouvementsStockDto update(Long id , MouvementsStockRegisterDto produit);
-    MouvementsStockDto detete(Long id);
+    MouvementsStockDto delete(Long id);
     MouvementsStockDto getById(Long id);
     List<MouvementsStockDto> getAll();
+    List<MouvementsStockDto> getByProduitId(Long id);
 }

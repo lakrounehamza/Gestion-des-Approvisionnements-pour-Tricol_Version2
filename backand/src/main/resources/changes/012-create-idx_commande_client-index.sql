@@ -1,0 +1,1 @@
+CREATE INDEX idx_commande_client ON commande(client_id);

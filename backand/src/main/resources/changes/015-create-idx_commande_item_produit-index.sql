@@ -1,0 +1,1 @@
+CREATE INDEX idx_commande_item_produit ON commande_item(produit_id);

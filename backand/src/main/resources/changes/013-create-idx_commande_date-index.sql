@@ -1,0 +1,1 @@
+CREATE INDEX idx_commande_date ON commande(date_commande);

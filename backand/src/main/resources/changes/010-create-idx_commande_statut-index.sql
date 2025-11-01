@@ -1,0 +1,1 @@
+CREATE INDEX idx_commande_statut ON commande(statut);

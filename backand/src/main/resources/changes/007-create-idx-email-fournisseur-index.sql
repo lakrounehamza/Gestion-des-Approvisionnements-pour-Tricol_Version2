@@ -1,0 +1,1 @@
+CREATE INDEX idx_fournisseur_ice ON fournisseur(email);

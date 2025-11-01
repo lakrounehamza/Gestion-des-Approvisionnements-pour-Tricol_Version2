@@ -1,0 +1,1 @@
+CREATE INDEX idx_commande_fournisseur ON commande(fournisseur_id);

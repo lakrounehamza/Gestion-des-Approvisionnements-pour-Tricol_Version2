@@ -1,0 +1,1 @@
+CREATE INDEX idx_mouvements_stock_date ON mouvements_stock(date_mouvement);

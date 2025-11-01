@@ -1,0 +1,1 @@
+CREATE INDEX idx_mouvements_stock_type ON mouvements_stock(type);

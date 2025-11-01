@@ -1,0 +1,1 @@
+CREATE INDEX idx_produit_categorie ON produit(categorie);

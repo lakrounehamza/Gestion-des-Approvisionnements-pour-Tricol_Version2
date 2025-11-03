@@ -2,6 +2,7 @@ package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto;
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.CommandeItem;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.MouvementsStock;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.ProduitItem;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.enums.CategorieEnum;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -26,4 +27,5 @@ public class ProduitDto {
     private CategorieEnum categorie;
     private List<CommandeItem> CommandeItem;
     private List<MouvementsStock> mouvementsStock;
+    private List<ProduitItem> produits;
 }

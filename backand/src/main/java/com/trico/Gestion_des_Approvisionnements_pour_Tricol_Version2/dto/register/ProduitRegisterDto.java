@@ -2,6 +2,7 @@ package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.regist
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.CommandeItem;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.MouvementsStock;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.ProduitItem;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.enums.CategorieEnum;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -40,4 +41,6 @@ public class ProduitRegisterDto {
 
     @Valid
     private List<MouvementsStock> mouvementsStock;
+    @Valid
+    private List<ProduitItem> produits;
 }

@@ -26,4 +26,6 @@ public class Produit {
     private List<CommandeItem> CommandeItem;
     @OneToMany
     private List<MouvementsStock> mouvementsStock;
+    @OneToMany
+    private List<ProduitItem> produits;
 }

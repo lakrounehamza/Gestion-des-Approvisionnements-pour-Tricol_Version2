@@ -19,11 +19,11 @@ public class Produit {
     private Long id;
     private String nom;
     private double prix;
+    private int quantite;
     private String description;
     private CategorieEnum categorie;
     @OneToMany
     private List<CommandeItem> CommandeItem;
     @OneToMany
     private List<MouvementsStock> mouvementsStock;
-
 }

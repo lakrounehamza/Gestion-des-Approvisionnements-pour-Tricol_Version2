@@ -21,6 +21,7 @@ public class ProduitDto {
     private Long id;
     private String nom;
     private double prix;
+    private int quantite;
     private String description;
     private CategorieEnum categorie;
     private List<CommandeItem> CommandeItem;

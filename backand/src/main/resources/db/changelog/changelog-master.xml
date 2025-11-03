@@ -11,4 +11,5 @@
     <include file  = "db/changelog/changes/004-create-commande-item-table.sql" />
     <include file  = "db/changelog/changes/005-create-mouvements-stock-table.sql" />
     <include file  = "db/changelog/changes/006-create-trigger-control-stock.sql" />
+    <include file  = "db/changelog/changes/019-add-column-quentite-produit.sql" />
 </databaseChangeLog>

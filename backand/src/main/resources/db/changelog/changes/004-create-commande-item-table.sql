@@ -1,5 +1,5 @@
-CREATE TABLE commande_item (
-                               id BIGSERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS commande_item (
+                               id  int PRIMARY KEY AUTO_INCREMENT,
                                quantity INTEGER NOT NULL CHECK (quantity > 0),
                                prix_unitaire DECIMAL(10, 2),
                                date_item TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

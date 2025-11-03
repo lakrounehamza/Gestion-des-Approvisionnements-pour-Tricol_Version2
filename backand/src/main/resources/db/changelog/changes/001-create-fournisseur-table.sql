@@ -1,5 +1,5 @@
-CREATE TABLE fournisseur (
-                             id BIGSERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS   fournisseur (
+                             id  int PRIMARY KEY AUTO_INCREMENT,
                              societe VARCHAR(200) NOT NULL,
                              adresse VARCHAR(255),
                              contact VARCHAR(100),

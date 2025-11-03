@@ -1,5 +1,5 @@
-CREATE TABLE mouvements_stock (
-                                  id BIGSERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS mouvements_stock (
+                                  id  int PRIMARY KEY AUTO_INCREMENT,
                                   date_mouvement TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                   quantity INTEGER NOT NULL,
                                   quantity_min INTEGER NOT NULL DEFAULT 10,

@@ -1,6 +1,6 @@
-CREATE TABLE commande
+CREATE TABLE IF NOT EXISTScommande
 (
-    id             BIGSERIAL PRIMARY KEY,
+    id             int PRIMARY KEY AUTO_INCREMENT,
     statut         VARCHAR(50) NOT NULL,
     montant        DECIMAL(12, 2),
     date_commande  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,

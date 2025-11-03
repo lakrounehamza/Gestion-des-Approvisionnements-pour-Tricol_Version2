@@ -1,5 +1,5 @@
-CREATE TABLE produit (
-                         id BIGSERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS produit (
+                         id  int PRIMARY KEY AUTO_INCREMENT,
                          nom VARCHAR(200) NOT NULL,
                          prix DECIMAL(10, 2) NOT NULL,
                          description TEXT,

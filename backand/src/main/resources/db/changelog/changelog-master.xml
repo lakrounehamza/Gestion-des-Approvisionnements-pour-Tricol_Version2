@@ -5,11 +5,5 @@
         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation = "http://www.liquibase.org/xml/ns/dbchangelog/1.9
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd" >
-    <include file  = "db/changelog/changes/001-create-fournisseur-table.sql" />
-    <include file  = "db/changelog/changes/002-create-produit-table.sql" />
-    <include file  = "db/changelog/changes/003-create-commande-table.sql" />
-    <include file  = "db/changelog/changes/004-create-commande-item-table.sql" />
-    <include file  = "db/changelog/changes/005-create-mouvements-stock-table.sql" />
-    <include file  = "db/changelog/changes/006-create-trigger-control-stock.sql" />
-    <include file  = "db/changelog/changes/019-add-column-quentite-produit.sql" />
+    <include file  = "./changes/001-create-fournisseur-table.sql" />
 </databaseChangeLog>

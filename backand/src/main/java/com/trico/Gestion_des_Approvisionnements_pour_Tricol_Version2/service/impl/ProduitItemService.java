@@ -8,6 +8,7 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.Pro
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IProduitItemService;
 import lombok.Data;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,7 @@ public class ProduitItemService implements IProduitItemService {
     @Override
     public List<ProduitItemDto> findAll() {
         List<ProduitItem> produitItems = produitItemDao.findAll();
+        produitItems.sort(Comparator.comparing(p -> p.getProduit().getId()));
         return produitItems.stream().map(produitItem -> produitItemMapper.toDto(produitItem)).collect(Collectors.toList());
     }
 

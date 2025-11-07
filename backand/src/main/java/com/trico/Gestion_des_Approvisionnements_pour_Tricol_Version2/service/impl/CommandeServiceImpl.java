@@ -4,14 +4,15 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IComman
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.CommandeDto;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.register.CommandeRegisterDto;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Commande;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.NotFoundException;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.CommandeMapper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.ICommandeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class CommandeServiceImpl implements ICommandeService {
     public CommandeDto update(Long id, CommandeRegisterDto commandeDto) {
         Optional<Commande> optionalCommande = commandeDao.findById(id);
         if (optionalCommande.isEmpty()) {
-            throw new RuntimeException("Commande non trouvée avec l'id : " + id);
+            throw new NotFoundException("Commande non trouvée avec l'id : " + id);
         }
 
         Commande existing = optionalCommande.get();
@@ -51,7 +52,7 @@ public class CommandeServiceImpl implements ICommandeService {
     public CommandeDto delete(Long id) {
         Optional<Commande> optionalCommande = commandeDao.findById(id);
         if (optionalCommande.isEmpty()) {
-            throw new RuntimeException("Commande non trouvée avec l'id : " + id);
+            throw new NotFoundException("Commande non trouvée avec l'id : " + id);
         }
 
         Commande commande = optionalCommande.get();
@@ -63,23 +64,24 @@ public class CommandeServiceImpl implements ICommandeService {
     public CommandeDto getById(Long id) {
         return commandeDao.findById(id)
                 .map(commandeMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Commande non trouvée avec l'id : " + id));
+                .orElseThrow(() -> new NotFoundException("Commande non trouvée avec l'id : " + id));
     }
 
     @Override
-    public List<CommandeDto> getAll() {
-        return commandeDao.findAll()
-                .stream()
-                .map(commandeMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<CommandeDto> getAll(Pageable pageable) {
+        Page<Commande> commandes = commandeDao.findAll(pageable);
+        if (commandes.isEmpty()) {
+            throw new NotFoundException("Aucune commande trouvée.");
+        }
+        return commandes.map(commandeMapper::toDto);
     }
 
     @Override
-    public List<CommandeDto> getByStatut(String status) {
-        return commandeDao.findAll().
-                stream().
-                filter(commande -> commande.getStatut().equals(status)).
-                map(commande -> commandeMapper.toDto(commande)).
-                collect(Collectors.toList());
+    public Page<CommandeDto> getByStatut(String status, Pageable pageable) {
+        Page<Commande> commandes = commandeDao.findByStatut(status, pageable);
+        if (commandes.isEmpty()) {
+            throw new NotFoundException("Aucune commande trouvée avec le statut : " + status);
+        }
+        return commandes.map(commandeMapper::toDto);
     }
 }

@@ -7,11 +7,10 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Com
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.NotFoundException;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.CommandeItemMapper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.ICommandeItemService;
- import lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class CommandeItemServiceImpl implements ICommandeItemService {
     @Override
     public CommandeItemDto update(Long id, CommandeItemRegisterDto dto) {
         CommandeItem existingItem = commandeItemDao.findById(id)
-                .orElseThrow(() -> new NotFoundException("L’élément de commande avec l’ID " + id + " n’existe pas pour la modification."));
+                .orElseThrow(() -> new NotFoundException("L'élément de commande avec l'ID " + id + " n'existe pas pour la modification."));
 
         existingItem.setCommande(dto.getCommande());
         existingItem.setQuantity(dto.getQuantity());
@@ -44,7 +43,7 @@ public class CommandeItemServiceImpl implements ICommandeItemService {
     @Override
     public CommandeItemDto delete(Long id) {
         CommandeItem commandeItem = commandeItemDao.findById(id)
-                .orElseThrow(() -> new NotFoundException("L’élément de commande avec l’ID " + id + " n’existe pas pour la suppression."));
+                .orElseThrow(() -> new NotFoundException("L'élément de commande avec l'ID " + id + " n'existe pas pour la suppression."));
         commandeItemDao.delete(commandeItem);
         return commandeItemMapper.toDto(commandeItem);
     }
@@ -52,26 +51,25 @@ public class CommandeItemServiceImpl implements ICommandeItemService {
     @Override
     public CommandeItemDto getById(Long id) {
         CommandeItem commandeItem = commandeItemDao.findById(id)
-                .orElseThrow(() -> new NotFoundException("L’élément de commande avec l’ID " + id + " n’existe pas."));
+                .orElseThrow(() -> new NotFoundException("L'élément de commande avec l'ID " + id + " n'existe pas."));
         return commandeItemMapper.toDto(commandeItem);
     }
 
     @Override
-    public List<CommandeItemDto> getAll() {
-        List<CommandeItem> items = commandeItemDao.findAll();
+    public Page<CommandeItemDto> getAll(Pageable pageable) {
+        Page<CommandeItem> items = commandeItemDao.findAll(pageable);
         if (items.isEmpty()) {
             throw new NotFoundException("Aucun élément de commande trouvé.");
         }
-        return items.stream()
-                .map(commandeItemMapper::toDto)
-                .collect(Collectors.toList());
+        return items.map(commandeItemMapper::toDto);
     }
 
     @Override
-    public List<CommandeItemDto> getByCommandeId(Long id) {
-        return commandeItemDao.findAll().
-                stream().
-                filter(commandeItemDto -> commandeItemDto.getCommande().getId().equals(id)).map(commandeItemMapper::toDto).
-                collect(Collectors.toList());
+    public Page<CommandeItemDto> getByCommandeId(Long id, Pageable pageable) {
+        Page<CommandeItem> items = commandeItemDao.findByCommandeId(id, pageable);
+        if (items.isEmpty()) {
+            throw new NotFoundException("Aucun élément trouvé pour la commande avec l'ID : " + id);
+        }
+        return items.map(commandeItemMapper::toDto);
     }
 }

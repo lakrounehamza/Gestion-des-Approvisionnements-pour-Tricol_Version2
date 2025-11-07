@@ -8,10 +8,9 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.MouvementsStockMapper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IMouvementsStockService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class MouvementsServiceImpl implements IMouvementsStockService {
     @Override
     public MouvementsStockDto update(Long id, MouvementsStockRegisterDto dto) {
         MouvementsStock existing = mouvementsStockDao.findById(id)
-                .orElseThrow(() -> new NotFoundException("Le mouvement de stock avec l’ID " + id + " n’existe pas pour la modification."));
+                .orElseThrow(() -> new NotFoundException("Le mouvement de stock avec l'ID " + id + " n'existe pas pour la modification."));
 
         existing.setDatemouvement(dto.getDatemouvement());
         existing.setQuantity(dto.getQuantity());
@@ -42,11 +41,10 @@ public class MouvementsServiceImpl implements IMouvementsStockService {
         return mouvementsStockMapper.toDto(updated);
     }
 
-
     @Override
     public MouvementsStockDto delete(Long id) {
         MouvementsStock mouvement = mouvementsStockDao.findById(id)
-                .orElseThrow(() -> new NotFoundException("Le mouvement de stock avec l’ID " + id + " n’existe pas pour la suppression."));
+                .orElseThrow(() -> new NotFoundException("Le mouvement de stock avec l'ID " + id + " n'existe pas pour la suppression."));
         mouvementsStockDao.delete(mouvement);
         return mouvementsStockMapper.toDto(mouvement);
     }
@@ -54,22 +52,25 @@ public class MouvementsServiceImpl implements IMouvementsStockService {
     @Override
     public MouvementsStockDto getById(Long id) {
         MouvementsStock mouvement = mouvementsStockDao.findById(id)
-                .orElseThrow(() -> new NotFoundException("Le mouvement de stock avec l’ID " + id + " n’existe pas."));
+                .orElseThrow(() -> new NotFoundException("Le mouvement de stock avec l'ID " + id + " n'existe pas."));
         return mouvementsStockMapper.toDto(mouvement);
     }
 
     @Override
-    public List<MouvementsStockDto> getAll() {
-        List<MouvementsStock> mouvements = mouvementsStockDao.findAll();
+    public Page<MouvementsStockDto> getAll(Pageable pageable) {
+        Page<MouvementsStock> mouvements = mouvementsStockDao.findAll(pageable);
         if (mouvements.isEmpty()) {
             throw new NotFoundException("Aucun mouvement de stock trouvé.");
         }
-        return mouvements.stream()
-                .map(mouvementsStockMapper::toDto)
-                .collect(Collectors.toList());
+        return mouvements.map(mouvementsStockMapper::toDto);
     }
+
     @Override
-    public List<MouvementsStockDto> getByProduitId(Long id){
-        return mouvementsStockDao.findAll().stream().filter(mouvementsStockDto -> mouvementsStockDto.getProduit().getId().equals(id)).map(mouvementsStockMapper::toDto).collect(Collectors.toList());
+    public Page<MouvementsStockDto> getByProduitId(Long id, Pageable pageable) {
+        Page<MouvementsStock> mouvements = mouvementsStockDao.findByProduitId(id, pageable);
+        if (mouvements.isEmpty()) {
+            throw new NotFoundException("Aucun mouvement trouvé pour le produit avec l'ID : " + id);
+        }
+        return mouvements.map(mouvementsStockMapper::toDto);
     }
 }

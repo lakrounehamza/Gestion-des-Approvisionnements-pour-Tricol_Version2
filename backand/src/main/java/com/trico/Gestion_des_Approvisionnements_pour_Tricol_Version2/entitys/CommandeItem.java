@@ -1,28 +1,29 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommandeItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int quantity;
     private Date date;
-    @OneToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "commande_id")
     private Commande commande;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "produit_id")
     private Produit produit;
 }

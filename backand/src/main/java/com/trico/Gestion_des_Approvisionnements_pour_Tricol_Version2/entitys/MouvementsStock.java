@@ -5,10 +5,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
-@Component
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,12 +15,18 @@ import java.util.Date;
 public class MouvementsStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id  ;
-    private Date datemouvement ;
-    private int quantity  ;
-    private int quantityMin ;
-    private TypeMouvementEnum type ;
-    private String reference ;
+    private Long id;
+
+    private Date datemouvement;
+    private int quantity;
+    private double price ;
+
+    @Enumerated(EnumType.STRING)
+    private TypeMouvementEnum type;
+
+    //private String reference;
+
     @ManyToOne
+    @JoinColumn(name = "produit_id")
     private Produit produit;
 }

@@ -27,7 +27,7 @@ public class FournisseurServiceImpl implements IFournisseurService {
     }
 
     @Override
-    public FournisseurDto update(Long id, FournisseurDto fournisseurDto) {
+    public FournisseurDto update(Long id, FournisseurRegistreDTO fournisseurDto) {
         if (!fournisseurDao.existsById(id)) {
             throw new RuntimeException("fournisseur non trouve ");
         }

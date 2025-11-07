@@ -36,11 +36,11 @@ public class CommandeServiceImpl implements ICommandeService {
 
         Commande existing = optionalCommande.get();
 
-        existing.setClinet(commandeDto.getClient());
+        existing.setClient(commandeDto.getClient());
         existing.setStatut(commandeDto.getStatut());
         existing.setMontant(commandeDto.getMontant());
         existing.setFournisseur(commandeDto.getFournisseur());
-        existing.setCommandeItem(commandeDto.getCommandeItems());
+        //existing.setCommandeItems(commandeDto.getCommandeItems());
         existing.setDateCommande(commandeDto.getDateCommande());
 
         Commande updated = commandeDao.save(existing);

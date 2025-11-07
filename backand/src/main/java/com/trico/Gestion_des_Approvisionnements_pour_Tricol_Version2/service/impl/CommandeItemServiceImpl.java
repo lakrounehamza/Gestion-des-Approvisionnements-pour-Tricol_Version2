@@ -69,9 +69,9 @@ public class CommandeItemServiceImpl implements ICommandeItemService {
 
     @Override
     public List<CommandeItemDto> getByCommandeId(Long id) {
-        return getAll().
+        return commandeItemDao.findAll().
                 stream().
-                filter(commandeItemDto -> commandeItemDto.getCommande().getId().equals(id)).
+                filter(commandeItemDto -> commandeItemDto.getCommande().getId().equals(id)).map(commandeItemMapper::toDto).
                 collect(Collectors.toList());
     }
 }

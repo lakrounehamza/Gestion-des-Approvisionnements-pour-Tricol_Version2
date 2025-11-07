@@ -1,13 +1,18 @@
 package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.impl;
 
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IMouvementsStockDao;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IProduitDao;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dao.IProduitItemDao;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.ProduitDto;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.register.ProduitRegisterDto;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Produit;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.enums.CategorieEnum;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.enums.StatutCommandeEnum;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.NotFoundException;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.ProduitItemMapper;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.mappers.ProduitMapper;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IMouvementsStockService;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IProduitItemService;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IProduitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +26,9 @@ public class ProduitServiceImpl implements IProduitService {
 
     private final ProduitMapper produitMapper;
     private final IProduitDao produitDao;
+    private final IProduitItemService produitItemService;
+    private final IMouvementsStockService  mouvementsStockService;
+    private final ProduitItemMapper produitItemMapper;
 
     @Override
     public ProduitDto save(ProduitRegisterDto dto) {
@@ -34,7 +42,7 @@ public class ProduitServiceImpl implements IProduitService {
         Produit existingProduit = produitDao.findById(id).orElseThrow(() -> new NotFoundException("Le produit avec l’ID " + id + " n’existe pas pour la modification."));
 
         existingProduit.setNom(dto.getNom());
-        existingProduit.setPrix(dto.getPrix());
+        //existingProduit.setPrix(dto.getPrix());
         existingProduit.setDescription(dto.getDescription());
         existingProduit.setCategorie(dto.getCategorie());
         Produit updated = produitDao.save(existingProduit);
@@ -61,7 +69,7 @@ public class ProduitServiceImpl implements IProduitService {
         if (produits.isEmpty()) {
             throw new NotFoundException("Aucun produit disponible.");
         }
-        return produits.stream().map(produitMapper::toDto).collect(Collectors.toList());
+        return produits.stream().map(p->(ProduitDto)produitMapper.toDto(p)).collect(Collectors.toList());
     }
 
     @Override

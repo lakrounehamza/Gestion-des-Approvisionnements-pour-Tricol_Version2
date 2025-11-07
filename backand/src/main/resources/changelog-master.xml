@@ -1,0 +1,27 @@
+<?xml version= "1.0" encoding= "UTF-8" ?>
+
+<databaseChangeLog
+        xmlns = "http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation = "http://www.liquibase.org/xml/ns/dbchangelog/1.9
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd" >
+    <include file  = "db/changelog/changes/001-create-fournisseur-table.sql" />
+    <include file  = "db/changelog/changes/002-create-produit-table.sql" />
+    <include file  = "db/changelog/changes/003-create-commande-table.sql" />
+    <include file  = "db/changelog/changes/004-create-commande-item-table.sql" />
+    <include file  = "db/changelog/changes/005-create-mouvements-stock-table.sql" />
+<!--    <include file  = "db/changelog/changes/006-create-trigger-control-stock.sql" />-->
+<!--    <include file  = "db/changelog/changes/007-create-idx-email-fournisseur-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/008-create-idx-ice-fournisseur-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/009-create-idx-produit-categorie-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/010-create-idx_commande_statut-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/011-create-idx_commande_fournisseur-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/012-create-idx_commande_client-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/013-create-idx_commande_date-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/014-create-idx_commande_item_commande-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/015-create-idx_commande_item_produit-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/016-create-idx_mouvements_stock_produit-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/017-create-idx_mouvements_stock_type-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/018-create-idx_mouvements_stock_date-index.sql" />-->
+<!--    <include file  = "db/changelog/changes/019-add-column-quantite-produit.sql" />-->
+</databaseChangeLog>

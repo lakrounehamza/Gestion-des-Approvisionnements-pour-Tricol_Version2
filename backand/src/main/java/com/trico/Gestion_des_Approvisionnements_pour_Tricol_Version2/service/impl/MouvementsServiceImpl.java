@@ -34,9 +34,8 @@ public class MouvementsServiceImpl implements IMouvementsStockService {
 
         existing.setDatemouvement(dto.getDatemouvement());
         existing.setQuantity(dto.getQuantity());
-        existing.setQuantityMin(dto.getQuantityMin());
+        existing.setPrice(dto.getPrice());
         existing.setProduit(dto.getProduit());
-        existing.setReference(dto.getReference());
         existing.setType(dto.getType());
 
         MouvementsStock updated = mouvementsStockDao.save(existing);
@@ -71,6 +70,6 @@ public class MouvementsServiceImpl implements IMouvementsStockService {
     }
     @Override
     public List<MouvementsStockDto> getByProduitId(Long id){
-        return getAll().stream().filter(mouvementsStockDto -> mouvementsStockDto.getProduit().getId().equals(id)).collect(Collectors.toList());
+        return mouvementsStockDao.findAll().stream().filter(mouvementsStockDto -> mouvementsStockDto.getProduit().getId().equals(id)).map(mouvementsStockMapper::toDto).collect(Collectors.toList());
     }
 }

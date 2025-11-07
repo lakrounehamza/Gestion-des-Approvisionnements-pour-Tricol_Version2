@@ -25,7 +25,7 @@ Le projet devra appliquer les **bonnes pratiques modernes** de :
 
 ## 🛠️Diagramme de classes ## 
 
-![Diagramme de classes](./daigramme_Class.png)
+![Diagramme de classes](./daigrammeV2_class.png)
 
 ---
 ## ⚙️ Exigences fonctionnelles

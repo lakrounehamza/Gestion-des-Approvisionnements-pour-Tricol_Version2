@@ -2,6 +2,7 @@ package com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.dto.regist
 
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Commande;
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.Produit;
+import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.entitys.ProduitItem;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;

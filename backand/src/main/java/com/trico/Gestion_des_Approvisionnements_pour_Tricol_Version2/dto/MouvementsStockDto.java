@@ -17,8 +17,8 @@ public class MouvementsStockDto {
     private Long id;
     private Date datemouvement ;
     private int quantity  ;
-    private int quantityMin ;
+    private double price ;
     private TypeMouvementEnum type ;
-    private String reference ;
-    private Produit produit;
+    //private String reference ;
+   // private Produit produit;
 }

@@ -21,11 +21,9 @@ import java.util.List;
 public class ProduitDto {
     private Long id;
     private String nom;
-    private double prix;
-    private int quantite;
     private String description;
     private CategorieEnum categorie;
-    private List<CommandeItem> CommandeItem;
-    private List<MouvementsStock> mouvementsStock;
-    private List<ProduitItem> produits;
+    //private List<CommandeItem> CommandeItem;
+    private List<MouvementsStockDto> mouvementsStock;
+    private List<ProduitItemDto> produitItems;
 }

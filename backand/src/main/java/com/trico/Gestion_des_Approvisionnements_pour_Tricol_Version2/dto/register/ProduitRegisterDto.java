@@ -23,11 +23,11 @@ public class ProduitRegisterDto {
     @Size(min = 2, max = 100, message = "Le nom du produit doit contenir entre 2 et 100 caractères.")
     private String nom;
 
-    @NotNull(message = "Le prix du produit est obligatoire.")
-    @DecimalMin(value = "0.1", message = "Le prix doit être supérieur à 0.")
-    private double prix;
-    @Positive
-    private int quantite;
+//    @NotNull(message = "Le prix du produit est obligatoire.")
+//    @DecimalMin(value = "0.1", message = "Le prix doit être supérieur à 0.")
+//    private double prix;
+//    @Positive
+//    private int quantite;
 
     @NotBlank(message = "La description du produit est obligatoire.")
     @Size(max = 255, message = "La description ne doit pas dépasser 255 caractères.")

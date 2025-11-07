@@ -14,5 +14,4 @@ public class ProduitItemDto {
     private Long id;
     private double prix;
     private int quantite;
-    private Produit produit;
 }

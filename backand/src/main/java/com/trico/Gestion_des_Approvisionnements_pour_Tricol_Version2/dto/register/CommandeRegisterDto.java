@@ -31,9 +31,9 @@ public class CommandeRegisterDto {
     @PastOrPresent(message = "La date de commande ne peut pas être dans le futur.")
     private Date dateCommande;
 
-    @NotEmpty(message = "La commande doit contenir au moins un article.")
-    @Valid
-    private List<CommandeItem> commandeItems;
+//    @NotEmpty(message = "La commande doit contenir au moins un article.")
+//    @Valid
+//    private List<CommandeItem> commandeItems;
 
     @NotNull(message = "Le fournisseur est obligatoire.")
     private Fournisseur fournisseur;

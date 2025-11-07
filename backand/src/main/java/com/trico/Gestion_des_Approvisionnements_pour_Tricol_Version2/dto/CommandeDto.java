@@ -20,7 +20,7 @@ public class CommandeDto {
     private StatutCommandeEnum statut;
     private Double montant;
     private Date dateCommande;
-    private List<CommandeItem> CommandeItem;
-    private Fournisseur fournisseur;
-    private Fournisseur clinet;
+    private List<CommandeItemDto> commandeItems;
+    private FournisseurDto fournisseur;
+    private FournisseurDto client;
 }

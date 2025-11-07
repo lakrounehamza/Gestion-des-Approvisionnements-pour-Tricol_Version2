@@ -27,14 +27,14 @@ public class MouvementsStockRegisterDto {
     private int quantity;
 
     @Min(value = 0, message = "La quantité minimale ne peut pas être négative.")
-    private int quantityMin;
+    private double price;
 
     @NotNull(message = "Le type de mouvement est obligatoire.")
     private TypeMouvementEnum type;
 
-    @NotBlank(message = "La référence du mouvement est obligatoire.")
-    private String reference;
+//    @NotBlank(message = "La référence du mouvement est obligatoire.")
+//    private String reference;
 
     @NotNull(message = "Le produit associé est obligatoire.")
-    private Produit produit;
+    private Produit  produit;
 }

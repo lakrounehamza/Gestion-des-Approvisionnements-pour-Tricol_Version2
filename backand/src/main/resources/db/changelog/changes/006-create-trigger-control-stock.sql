@@ -1,51 +1,63 @@
+
 DELIMITER $$
-CREATE TRIGGER trigger_controle_stock
-    BEFORE INSERT ON commande_item
+CREATE TRIGGER controller_commande
+    AFTER INSERT ON commande_item
     FOR EACH ROW
 BEGIN
-    DECLARE v_stock_actuel INT DEFAULT 0;
-    DECLARE v_quantity_min INT DEFAULT 0;
-    DECLARE v_produit_nom VARCHAR(200);
-    DECLARE v_stock_apres INT DEFAULT 0;
+    DECLARE v_stock INT DEFAULT 0;
+	DECLARE v_to_consume INT DEFAULT 0;
+	DECLARE v_id BIGINT;
+	DECLARE v_qty INT;
+	DECLARE v_price DOUBLE;
+	DECLARE v_total_price DOUBLE DEFAULT 0;
 
-    SELECT nom INTO v_produit_nom
-    FROM produit
-    WHERE id = NEW.produit_id;
-
-    SELECT
-        COALESCE(SUM(CASE WHEN type = 'ENTREE' THEN quantity ELSE 0 END), 0) -
-        COALESCE(SUM(CASE WHEN type = 'SORTIE' THEN quantity ELSE 0 END), 0)
-    INTO v_stock_actuel
-    FROM mouvements_stock
+	-- total disponible
+    SELECT IFNULL(SUM(quantite),0) INTO v_stock
+    FROM produit_item
     WHERE produit_id = NEW.produit_id;
 
-    SELECT COALESCE(MAX(quantity_min), 10)
-    INTO v_quantity_min
-    FROM mouvements_stock
-    WHERE produit_id = NEW.produit_id;
-
-    IF v_stock_actuel < NEW.quantity THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = CONCAT('Stock insuffisant pour le produit (ID: ', NEW.produit_id,
-                                  '). Stock actuel: ', v_stock_actuel,
-                                  ', Quantité demandée: ', NEW.quantity);
+    IF v_stock > 0 THEN
+		-- limiter la quantité à ce qui est disponible
+		IF NEW.quantity > v_stock THEN
+			SET v_to_consume = v_stock;
+    ELSE
+			SET v_to_consume = NEW.quantity;
 END IF;
 
-SET v_stock_apres = v_stock_actuel - NEW.quantity;
-INSERT INTO mouvements_stock (
-    date_mouvement,
-    quantity,
-    quantity_min,
-    type,
-    reference,
-    produit_id
-) VALUES (
-             NOW(),
-             NEW.quantity,
-             v_quantity_min,
-             'SORTIE',
-             CONCAT('CMD-', NEW.commande_id, '-ITEM-', NEW.id),
-             NEW.produit_id
-         );
+-- consommer FIFO
+WHILE v_to_consume > 0 DO
+SELECT id, quantite, prix INTO v_id, v_qty, v_price
+FROM produit_item
+WHERE produit_id = NEW.produit_id AND quantite > 0
+ORDER BY id ASC
+    LIMIT 1;
+
+IF v_id IS NULL THEN
+				-- plus de lots trouvés (sécurité)
+				SET v_to_consume = 0;
+ELSE
+				IF v_qty <= v_to_consume THEN
+UPDATE produit_item SET quantite = 0 WHERE id = v_id;
+SET v_total_price = v_total_price + (v_qty * v_price);
+INSERT INTO mouvements_stock(datemouvement, quantity, price, type, produit_id)
+VALUES (NOW(), v_qty, v_qty * v_price, 'SORTIE', NEW.produit_id);
+SET v_to_consume = v_to_consume - v_qty;
+                    --insert prduit_item pour client
+iNSERT INTO produit_item (prix, quantite, produit_id) VALUES (v_price, v_qty, NEW.produit_id);
+ELSE
+UPDATE produit_item SET quantite = quantite - v_to_consume WHERE id = v_id;
+SET v_total_price = v_total_price + (v_to_consume * v_price);
+INSERT INTO mouvements_stock(datemouvement, quantity, price, type, produit_id)
+VALUES (NOW(), v_to_consume, v_to_consume * v_price, 'SORTIE', NEW.produit_id);
+SET v_to_consume = 0;
+END IF;
+END IF;
+END WHILE;
+END IF;
+
+	-- v_total_price contient le montant total consommé si besoin
 END$$
 DELIMITER ;
+
+
+

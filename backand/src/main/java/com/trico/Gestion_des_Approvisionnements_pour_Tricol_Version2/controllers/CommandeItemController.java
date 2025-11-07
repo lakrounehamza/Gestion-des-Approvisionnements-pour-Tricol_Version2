@@ -6,10 +6,12 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.ICommandeItemService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -24,9 +26,37 @@ public class CommandeItemController {
         return ResponseEntity.ok(savedItem);
     }
 
+    @GetMapping
+    public ResponseEntity<Page<CommandeItemDto>> getAllCommandeItems(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<CommandeItemDto> items = commandeItemService.getAll(pageable);
+        if (items.isEmpty()) {
+            throw new NotFoundException("Aucun élément de commande trouvé.");
+        }
+        return ResponseEntity.ok(items);
+    }
+
     @GetMapping("/commande/{commandeId}")
-    public ResponseEntity<List<CommandeItemDto>> getItemsByCommande(@PathVariable Long commandeId) {
-        List<CommandeItemDto> items = commandeItemService.getByCommandeId(commandeId);
+    public ResponseEntity<Page<CommandeItemDto>> getItemsByCommande(
+            @PathVariable Long commandeId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<CommandeItemDto> items = commandeItemService.getByCommandeId(commandeId, pageable);
         if (items.isEmpty()) {
             throw new NotFoundException("Aucun item trouvé pour la commande avec l'ID : " + commandeId);
         }

@@ -68,7 +68,7 @@ public class PrduitItemController {
     public ResponseEntity<ProduitItemDto> update(
             @PathVariable Long id,
             @Valid @RequestBody ProduitItemRegisterDto produitItemRegisterDto) {
-        ProduitItemDto updatedItem = produitItemService.update(id, produitItemRegisterDto);
+        ProduitItemDto updatedItem = produitItemService.update(produitItemRegisterDto,id);
         return ResponseEntity.ok(updatedItem);
     }
 }

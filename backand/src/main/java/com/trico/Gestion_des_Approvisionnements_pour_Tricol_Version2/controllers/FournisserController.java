@@ -10,10 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -23,13 +21,13 @@ public class FournisserController {
     private final IFournisseurService fournisseurService;
 
     @PostMapping
-    public ResponseEntity<FournisseurDto> createFournisseur(@Valid @RequestBody FournisseurRegistreDTO fournisseurDto) {
-        FournisseurDto f = fournisseurService.save(fournisseurDto);
-        return ResponseEntity.ok(f);
+    public ResponseEntity<FournisseurDto> createFournisseur(@Valid @RequestBody FournisseurRegistreDTO dto) {
+        FournisseurDto savedFournisseur = fournisseurService.save(dto);
+        return ResponseEntity.ok(savedFournisseur);
     }
 
     @GetMapping
-    public ResponseEntity<Page<FournisseurDto>> getAllFournisseur(
+    public ResponseEntity<Page<FournisseurDto>> getAllFournisseurs(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -55,18 +53,23 @@ public class FournisserController {
         return ResponseEntity.ok(fournisseur);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<FournisseurDto> updateFournisseur(
+            @PathVariable Long id,
+            @Valid @RequestBody FournisseurRegistreDTO dto) {
+        FournisseurDto updatedFournisseur = fournisseurService.update(id, dto);
+        if (updatedFournisseur == null) {
+            throw new NotFoundException("Impossible de mettre à jour : fournisseur introuvable avec l'ID : " + id);
+        }
+        return ResponseEntity.ok(updatedFournisseur);
+    }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<FournisseurDto> deleteFournisseurById(@PathVariable Long id) {
+    public ResponseEntity<FournisseurDto> deleteFournisseur(@PathVariable Long id) {
         FournisseurDto deletedFournisseur = fournisseurService.delete(id);
         if (deletedFournisseur == null) {
             throw new NotFoundException("Impossible de supprimer : fournisseur introuvable avec l'ID : " + id);
         }
         return ResponseEntity.ok(deletedFournisseur);
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<FournisseurDto> updateFournisseurById(@PathVariable Long id, @Valid @RequestBody FournisseurRegistreDTO fournisseurDto) {
-        FournisseurDto f = fournisseurService.update(id, fournisseurDto);
-        return ResponseEntity.ok(f);
     }
 }

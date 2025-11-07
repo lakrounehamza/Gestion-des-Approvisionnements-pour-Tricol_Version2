@@ -6,6 +6,10 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.ICommandeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +29,17 @@ public class CommandeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommandeDto>> getAllCommandes() {
-        List<CommandeDto> commandes = commandeService.getAll();
+    public ResponseEntity<Page<CommandeDto>> getAllCommandes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<CommandeDto> commandes = commandeService.getAll(pageable);
         if (commandes.isEmpty()) {
             throw new NotFoundException("Aucune commande trouvée.");
         }
@@ -52,8 +65,18 @@ public class CommandeController {
     }
 
     @GetMapping("/statut/{statut}")
-    public ResponseEntity<List<CommandeDto>> getCommandesByStatut(@PathVariable String statut) {
-        List<CommandeDto> filteredCommandes = commandeService.getByStatut(statut);
+    public ResponseEntity<Page<CommandeDto>> getCommandesByStatut(
+            @PathVariable String statut,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<CommandeDto> filteredCommandes = commandeService.getByStatut(statut, pageable);
         if (filteredCommandes.isEmpty()) {
             throw new NotFoundException("Aucune commande trouvée avec le statut : " + statut);
         }

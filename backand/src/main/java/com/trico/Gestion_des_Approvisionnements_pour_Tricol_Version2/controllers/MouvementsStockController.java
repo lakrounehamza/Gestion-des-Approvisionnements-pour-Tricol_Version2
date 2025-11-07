@@ -6,6 +6,10 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IMouvementsStockService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +29,17 @@ public class MouvementsStockController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MouvementsStockDto>> getAllMouvements() {
-        List<MouvementsStockDto> mouvements = mouvementsStockService.getAll();
+    public ResponseEntity<Page<MouvementsStockDto>> getAllMouvements(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "DESC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<MouvementsStockDto> mouvements = mouvementsStockService.getAll(pageable);
         if (mouvements.isEmpty()) {
             throw new NotFoundException("Aucun mouvement de stock trouvé.");
         }
@@ -52,8 +65,18 @@ public class MouvementsStockController {
     }
 
     @GetMapping("/produit/{produitId}")
-    public ResponseEntity<List<MouvementsStockDto>> getMouvementsByProduit(@PathVariable Long produitId) {
-        List<MouvementsStockDto> mouvements = mouvementsStockService.getByProduitId(produitId);
+    public ResponseEntity<Page<MouvementsStockDto>> getMouvementsByProduit(
+            @PathVariable Long produitId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "dateMouvement") String sortBy,
+            @RequestParam(defaultValue = "DESC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<MouvementsStockDto> mouvements = mouvementsStockService.getByProduitId(produitId, pageable);
         if (mouvements.isEmpty()) {
             throw new NotFoundException("Aucun mouvement trouvé pour le produit avec l'ID : " + produitId);
         }

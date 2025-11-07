@@ -6,6 +6,10 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IFournisseurService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -25,8 +29,17 @@ public class FournisserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FournisseurDto>> getAllFournisseur() {
-        List<FournisseurDto> fournisseurs = fournisseurService.getAll();
+    public ResponseEntity<Page<FournisseurDto>> getAllFournisseur(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<FournisseurDto> fournisseurs = fournisseurService.getAll(pageable);
         if (fournisseurs.isEmpty()) {
             throw new NotFoundException("Aucun fournisseur trouvé.");
         }
@@ -49,5 +62,11 @@ public class FournisserController {
             throw new NotFoundException("Impossible de supprimer : fournisseur introuvable avec l'ID : " + id);
         }
         return ResponseEntity.ok(deletedFournisseur);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<FournisseurDto> updateFournisseurById(@PathVariable Long id, @Valid @RequestBody FournisseurRegistreDTO fournisseurDto) {
+        FournisseurDto f = fournisseurService.update(id, fournisseurDto);
+        return ResponseEntity.ok(f);
     }
 }

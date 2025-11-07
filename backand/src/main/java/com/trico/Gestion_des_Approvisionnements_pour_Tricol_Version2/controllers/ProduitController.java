@@ -6,6 +6,10 @@ import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.exceptions.
 import com.trico.Gestion_des_Approvisionnements_pour_Tricol_Version2.service.interfaces.IProduitService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +29,17 @@ public class ProduitController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProduitDto>> getAllProduits() {
-        List<ProduitDto> produits = produitService.getAll();
+    public ResponseEntity<Page<ProduitDto>> getAllProduits(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<ProduitDto> produits = produitService.getAll(pageable);
         if (produits.isEmpty()) {
             throw new NotFoundException("Aucun produit trouvé.");
         }
@@ -51,11 +64,49 @@ public class ProduitController {
         return ResponseEntity.ok(deletedProduit);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<ProduitDto> updateProduit(
+            @PathVariable Long id,
+            @Valid @RequestBody ProduitRegisterDto dto) {
+        ProduitDto updatedProduit = produitService.update(id, dto);
+        return ResponseEntity.ok(updatedProduit);
+    }
+
     @GetMapping("/categorie/{categorie}")
-    public ResponseEntity<List<ProduitDto>> getProduitsByCategorie(@PathVariable String categorie) {
-        List<ProduitDto> produits = produitService.getByCategorie(categorie);
+    public ResponseEntity<Page<ProduitDto>> getProduitsByCategorie(
+            @PathVariable String categorie,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nom") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<ProduitDto> produits = produitService.getByCategorie(categorie, pageable);
         if (produits.isEmpty()) {
             throw new NotFoundException("Aucun produit trouvé pour la catégorie : " + categorie);
+        }
+        return ResponseEntity.ok(produits);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProduitDto>> searchProduits(
+            @RequestParam(required = false) String nom,
+            @RequestParam(required = false) String reference,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nom") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<ProduitDto> produits = produitService.search(nom, reference, pageable);
+        if (produits.isEmpty()) {
+            throw new NotFoundException("Aucun produit trouvé pour les critères de recherche.");
         }
         return ResponseEntity.ok(produits);
     }

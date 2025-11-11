@@ -82,4 +82,9 @@ public class CommandeController {
         }
         return ResponseEntity.ok(filteredCommandes);
     }
+    @GetMapping("/count/byfournisser/{id}")
+    public ResponseEntity<Long> countByfournisser(@PathVariable Long id) {
+        Long   count  =  commandeService.countCommande(id);
+        return ResponseEntity.ok(count);
+    }
 }

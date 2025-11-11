@@ -23,7 +23,6 @@ public class ProduitDto {
     private String nom;
     private String description;
     private CategorieEnum categorie;
-    //private List<CommandeItem> CommandeItem;
     private List<MouvementsStockDto> mouvementsStock;
     private List<ProduitItemDto> produitItems;
 }

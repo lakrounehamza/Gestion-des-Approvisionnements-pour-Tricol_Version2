@@ -19,6 +19,4 @@ public class MouvementsStockDto {
     private int quantity  ;
     private double price ;
     private TypeMouvementEnum type ;
-    //private String reference ;
-   // private Produit produit;
 }

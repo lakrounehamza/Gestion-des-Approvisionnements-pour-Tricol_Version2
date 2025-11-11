@@ -18,6 +18,5 @@ public class CommandeItemDto {
     private Long id;
     private int quantity;
     private Date date;
-    //private Commande commande;
     private ProduitDto produit;
 }

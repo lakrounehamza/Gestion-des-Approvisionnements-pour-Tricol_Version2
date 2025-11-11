@@ -14,4 +14,5 @@ public interface ICommandeService {
     CommandeDto getById(Long id);
     Page<CommandeDto> getAll(Pageable pageable);
     Page<CommandeDto> getByStatut(String status, Pageable pageable);
+    public  Long  countCommande(Long id);
 }

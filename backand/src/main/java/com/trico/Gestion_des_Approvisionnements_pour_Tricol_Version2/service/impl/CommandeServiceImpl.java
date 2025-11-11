@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -83,5 +84,10 @@ public class CommandeServiceImpl implements ICommandeService {
             throw new NotFoundException("Aucune commande trouvée avec le statut : " + status);
         }
         return commandes.map(commandeMapper::toDto);
+    }
+    @Override
+    public  Long  countCommande(Long id){
+        List<Commande>  list = commandeDao.findAll();
+        return  list.stream().filter(c -> c.getFournisseur().equals(id)).count();
     }
 }
